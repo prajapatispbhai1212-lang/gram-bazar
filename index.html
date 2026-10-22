@@ -11,15 +11,7 @@
 </style>
 </head>
 <body>
-<div class="topline">🌾 Apne gaon ka bazaar, ab online! <span>Fresh • Local • Trusted</span></div>
-<header class="header">
-  <a class="brand" href="/"><span class="logo">🌿</span><span>Gram<span class="green">Bazar</span><small>Apne gaon ka bazaar</small></span></a>
-  <label class="location">📍 <span><small>Deliver to</small><strong id="pinText">Your location</strong></span></label>
-  <form id="searchForm" class="search"><input id="searchInput" placeholder="Search atta, sabzi, products..." aria-label="Search products"><button>⌕ Search</button></form>
-  <a class="headerBtn" id="accountBtn" href="user-dashboard.html" style="text-decoration:none;color:inherit;padding:8px 10px;border:1px solid #e6ece7;border-radius:9px">👤 <span>My Dashboard</span></a>
-  <button class="headerBtn" id="cartJump">🛒 <span>Cart <b id="cartCount">0</b></span></button>
-</header>
-<nav id="categoryNav" class="nav"><button class="cat active" data-category="All">All Products</button></nav>
+<div id="gb-common-nav"></div>
 <main>
   <section class="hero">
     <div class="heroText"><span class="eyebrow">LOCAL LOVE, FRESH EVERY DAY</span><h1>Gaon ka bazaar,<br><em>ab aapke ghar.</em></h1><p>Local dukandaar aur kisano se kharidein — aasaan, bharosemand aur apne paas.</p><button class="primary" onclick="document.querySelector('#products').scrollIntoView({behavior:'smooth'})">Shop Now →</button></div>
@@ -55,6 +47,7 @@
 </main>
 <footer><div class="footerBrand">🌿 Gram Bazar</div><p>Apne gaon ka bazaar, ab online.</p><div class="footerLinks"><a href="#products">Shop</a><a href="#cart">Cart & Checkout</a><a href="user-dashboard.html">My Dashboard</a><a href="mailto:support@example.com">Contact</a></div><small>© <span id="year"></span> Gram Bazar. Demo starter — original branding.</small></footer>
 <div id="toast" role="status" class="toast"></div>
+<script src="common-nav.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const products = [
@@ -91,12 +84,7 @@ function add(id,delta=1){const p=products.find(x=>x.id===id);const n=(Number(sta
 function renderCart(){const items=Object.entries(state.cart).map(([id,q])=>({p:products.find(p=>p.id===Number(id)),q:Number(q)})).filter(x=>x.p&&x.q>0);$('#cartCount').textContent=items.reduce((s,x)=>s+x.q,0);$('#cartItems').innerHTML=items.length?items.map(({p,q})=>`<div class="cartRow"><img src="${esc(p.image)}" alt="${esc(p.name)}"><div class="details"><strong>${esc(p.name)}</strong><small>${money(p.price)} × ${q}</small><strong>${money(p.price*q)}</strong></div><div class="qty"><button data-minus="${p.id}">−</button><span>${q}</span><button data-plus="${p.id}">+</button></div></div>`).join(''):'<p class="muted">Aapka cart abhi khaali hai. Products add karne ke liye upar shop karein.</p>';const subtotal=items.reduce((s,x)=>s+x.p.price*x.q,0),fee=!subtotal||subtotal>=499?0:40;$('#totals').innerHTML=`<div class="totalRow"><span>Subtotal</span><span>${money(subtotal)}</span></div><div class="totalRow"><span>Delivery</span><span>${fee?money(fee):subtotal?'FREE':'₹0'}</span></div><div class="totalRow grand"><span>Total</span><span>${money(subtotal+fee)}</span></div>`}
 document.addEventListener('click',e=>{const c=e.target.closest('[data-category]');if(c){state.category=c.dataset.category;renderCategories();renderProducts();$('#products').scrollIntoView({behavior:'smooth'});return}const a=e.target.closest('[data-add]');if(a){add(Number(a.dataset.add));return}const p=e.target.closest('[data-plus]');if(p){add(Number(p.dataset.plus),1);return}const m=e.target.closest('[data-minus]');if(m){add(Number(m.dataset.minus),-1);return}const w=e.target.closest('[data-wish]');if(w){const id=Number(w.dataset.wish);state.wishlist=state.wishlist.includes(id)?state.wishlist.filter(x=>x!==id):[...state.wishlist,id];persist();renderProducts();toast(state.wishlist.includes(id)?'Wishlist mein add hua':'Wishlist se remove hua')}});
 $('#searchForm').addEventListener('submit',e=>{e.preventDefault();state.query=$('#searchInput').value.trim();state.category='All';renderCategories();renderProducts();$('#products').scrollIntoView({behavior:'smooth'})});$('#sortSelect').addEventListener('change',e=>{state.sort=e.target.value;renderProducts()});$('#cartJump').addEventListener('click',()=>$('#cart').scrollIntoView({behavior:'smooth'}));$('#clearCart').addEventListener('click',()=>{state.cart={};persist();renderProducts();toast('Cart clear ho gaya')});
-$('#checkoutForm').addEventListener('submit',e=>{e.preventDefault();const items=Object.entries(state.cart).map(([id,q])=>({p:products.find(p=>p.id===Number(id)),q:Number(q)})).filter(x=>x.p&&x.q>0);if(!items.length){toast('Pehle cart mein products add karein.');return}const fd=new FormData(e.currentTarget),subtotal=items.reduce((s,x)=>s+x.p.price*x.q,0),delivery=subtotal>=499?0:40,total=subtotal+delivery,method=fd.get('paymentMethod'),orderNo='GB'+Date.now().toString().slice(-8);alert('Demo order created!
-Order ID: '+orderNo+'
-Total: '+money(total)+'
-Payment: '+method+'
-
-Yeh order browser demo hai; real server/payment par nahi gaya.');state.cart={};persist();renderProducts();e.currentTarget.reset()});
+$('#checkoutForm').addEventListener('submit',e=>{e.preventDefault();const items=Object.entries(state.cart).map(([id,q])=>({p:products.find(p=>p.id===Number(id)),q:Number(q)})).filter(x=>x.p&&x.q>0);if(!items.length){toast('Pehle cart mein products add karein.');return}const fd=new FormData(e.currentTarget),subtotal=items.reduce((s,x)=>s+x.p.price*x.q,0),delivery=subtotal>=499?0:40,total=subtotal+delivery,method=fd.get('paymentMethod'),orderNo='GB'+Date.now().toString().slice(-8);alert(`Demo order created!\nOrder ID: ${orderNo}\nTotal: ${money(total)}\nPayment: ${method}\n\nYeh order browser demo hai; real server/payment par nahi gaya.`);state.cart={};persist();renderProducts();e.currentTarget.reset()});
 $('#accountBtn').addEventListener('click',e=>{e.preventDefault();window.location.href='user-dashboard.html'});$('#year').textContent=new Date().getFullYear();renderCategories();renderProducts();renderCart();
 
 </script>
