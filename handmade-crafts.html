@@ -1,1 +1,805 @@
+```html
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Handmade Crafts | Gram Bazar</title>
+    <meta name="description" content="Gram Bazar पर हस्तनिर्मित सजावटी वस्तुएं, मिट्टी के बर्तन, हस्तशिल्प, लकड़ी की कलाकृतियां और स्थानीय कारीगरों के उत्पाद खोजें।">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fbf8f2;
+            color: #302c25;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        input, select, button {
+            font: inherit;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #713f12, #b77932);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(30px, 5vw, 46px);
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            max-width: 750px;
+            margin: auto;
+            color: #fff0d9;
+            font-size: 17px;
+        }
+
+        .container {
+            width: min(1150px, 94%);
+            margin: auto;
+        }
+
+        .intro {
+            text-align: center;
+            max-width: 850px;
+            margin: 45px auto 30px;
+        }
+
+        .intro h2 {
+            color: #8a4b16;
+            font-size: 29px;
+            margin-bottom: 12px;
+        }
+
+        .intro p {
+            color: #70675c;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 30px 0;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            flex: 1;
+            min-width: 190px;
+            padding: 13px 15px;
+            border: 1px solid #e3d5c1;
+            border-radius: 9px;
+            background: white;
+            outline: none;
+        }
+
+        .toolbar input:focus,
+        .toolbar select:focus {
+            border-color: #a86422;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .section-heading h2 {
+            font-size: 27px;
+            color: #8a4b16;
+        }
+
+        #product-count {
+            color: #70675c;
+            font-size: 14px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 22px;
+            margin-bottom: 55px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #eadfce;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 15px #00000008;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px #00000012;
+        }
+
+        .product-image {
+            height: 175px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f6ecdd;
+            font-size: 76px;
+        }
+
+        .product-info {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-category {
+            color: #a86422;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-info h3 {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .product-desc {
+            font-size: 13px;
+            color: #766d62;
+            margin-bottom: 14px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+            margin-top: auto;
+            margin-bottom: 13px;
+        }
+
+        .price {
+            color: #8a4b16;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .unit {
+            color: #766d62;
+            font-size: 12px;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 11px;
+            background: #9a5b21;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #713f12;
+        }
+
+        .empty-state {
+            display: none;
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 45px 15px;
+            color: #70675c;
+        }
+
+        .empty-state span {
+            font-size: 45px;
+        }
+
+        .empty-state h3 {
+            color: #8a4b16;
+            margin: 10px 0;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 10px 0 55px;
+        }
+
+        .benefit {
+            background: #f6ecdd;
+            border-radius: 12px;
+            text-align: center;
+            padding: 25px 16px;
+        }
+
+        .benefit span {
+            font-size: 36px;
+        }
+
+        .benefit h3 {
+            color: #8a4b16;
+            margin: 8px 0;
+            font-size: 18px;
+        }
+
+        .benefit p {
+            font-size: 14px;
+            color: #70675c;
+        }
+
+        .cta {
+            background: #713f12;
+            color: white;
+            border-radius: 16px;
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 55px;
+        }
+
+        .cta h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .cta p {
+            color: #fff0d9;
+            margin-bottom: 20px;
+        }
+
+        .cta a {
+            display: inline-block;
+            background: white;
+            color: #713f12;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #713f12;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 9px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 15px #0002;
+            max-width: calc(100% - 40px);
+        }
+
+        footer {
+            background: #422810;
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        footer p {
+            color: #f1e1cd;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .product-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 650px) {
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .product-image {
+                height: 125px;
+                font-size: 55px;
+            }
+
+            .product-info {
+                padding: 12px;
+            }
+
+            .product-info h3 {
+                font-size: 16px;
+            }
+
+            .price {
+                font-size: 17px;
+            }
+
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+
+            .cta h2 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Common Navigation -->
+    <div id="common-nav"></div>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h1>🎨 हस्तनिर्मित वस्तुएं</h1>
+            <p>
+                स्थानीय कारीगरों की कला, भारतीय परंपरा और
+                हाथों से बनी खूबसूरत वस्तुओं की दुनिया में आपका स्वागत है।
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Introduction -->
+        <section class="intro">
+            <h2>कारीगरी की खूबसूरती, आपके घर तक</h2>
+            <p>
+                Gram Bazar पर मिट्टी के बर्तन, सजावटी वस्तुएं,
+                हस्तनिर्मित आभूषण, लकड़ी की कलाकृतियां और
+                अन्य हस्तशिल्प उत्पाद खोजें।
+                स्थानीय कला और कारीगरों को प्रोत्साहित करने की हमारी पहल में जुड़ें।
+            </p>
+        </section>
+
+        <!-- Search and Filters -->
+        <section class="toolbar" aria-label="हस्तनिर्मित उत्पाद खोजें">
+
+            <input
+                type="search"
+                id="search-input"
+                placeholder="🔍 उत्पाद का नाम खोजें..."
+                aria-label="उत्पाद का नाम खोजें"
+            >
+
+            <select id="category-filter" aria-label="कैटेगरी चुनें">
+                <option value="all">सभी कैटेगरी</option>
+                <option value="pottery">मिट्टी के बर्तन</option>
+                <option value="decor">घर की सजावट</option>
+                <option value="jewellery">हस्तनिर्मित आभूषण</option>
+                <option value="wood">लकड़ी की कला</option>
+                <option value="textile">कपड़ा और हस्तकला</option>
+            </select>
+
+            <select id="sort-filter" aria-label="कीमत के अनुसार क्रम">
+                <option value="default">सामान्य क्रम</option>
+                <option value="low">कीमत: कम से ज्यादा</option>
+                <option value="high">कीमत: ज्यादा से कम</option>
+                <option value="name">नाम के अनुसार</option>
+            </select>
+
+        </section>
+
+        <!-- Product List -->
+        <section>
+            <div class="section-heading">
+                <h2>हमारे हस्तशिल्प उत्पाद</h2>
+                <span id="product-count" aria-live="polite"></span>
+            </div>
+
+            <div class="product-grid" id="product-grid">
+
+                <article class="product-card"
+                    data-id="clay-pot" data-name="मिट्टी का घड़ा"
+                    data-category="pottery" data-price="250">
+                    <div class="product-image">🏺</div>
+                    <div class="product-info">
+                        <span class="product-category">मिट्टी के बर्तन</span>
+                        <h3>मिट्टी का घड़ा</h3>
+                        <p class="product-desc">पारंपरिक मिट्टी का घड़ा</p>
+                        <div class="price-row">
+                            <span class="price">₹250</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="clay-pot">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="clay-diya" data-name="मिट्टी के दीये"
+                    data-category="pottery" data-price="120">
+                    <div class="product-image">🪔</div>
+                    <div class="product-info">
+                        <span class="product-category">मिट्टी के बर्तन</span>
+                        <h3>मिट्टी के दीये</h3>
+                        <p class="product-desc">त्योहार और पूजा के लिए</p>
+                        <div class="price-row">
+                            <span class="price">₹120</span>
+                            <span class="unit">/ 12 पीस</span>
+                        </div>
+                        <button class="add-btn" data-id="clay-diya">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="handmade-vase" data-name="हस्तनिर्मित फूलदान"
+                    data-category="decor" data-price="350">
+                    <div class="product-image">🏺</div>
+                    <div class="product-info">
+                        <span class="product-category">घर की सजावट</span>
+                        <h3>हस्तनिर्मित फूलदान</h3>
+                        <p class="product-desc">घर को सजाने के लिए</p>
+                        <div class="price-row">
+                            <span class="price">₹350</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="handmade-vase">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="wall-hanging" data-name="दीवार सजावट"
+                    data-category="decor" data-price="450">
+                    <div class="product-image">🪷</div>
+                    <div class="product-info">
+                        <span class="product-category">घर की सजावट</span>
+                        <h3>दीवार सजावट</h3>
+                        <p class="product-desc">पारंपरिक सजावटी डिजाइन</p>
+                        <div class="price-row">
+                            <span class="price">₹450</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="wall-hanging">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="beaded-necklace" data-name="हस्तनिर्मित हार"
+                    data-category="jewellery" data-price="299">
+                    <div class="product-image">📿</div>
+                    <div class="product-info">
+                        <span class="product-category">हस्तनिर्मित आभूषण</span>
+                        <h3>हस्तनिर्मित हार</h3>
+                        <p class="product-desc">खूबसूरत पारंपरिक आभूषण</p>
+                        <div class="price-row">
+                            <span class="price">₹299</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="beaded-necklace">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="earrings" data-name="हस्तनिर्मित झुमके"
+                    data-category="jewellery" data-price="180">
+                    <div class="product-image">💎</div>
+                    <div class="product-info">
+                        <span class="product-category">हस्तनिर्मित आभूषण</span>
+                        <h3>हस्तनिर्मित झुमके</h3>
+                        <p class="product-desc">रोजाना और खास अवसरों के लिए</p>
+                        <div class="price-row">
+                            <span class="price">₹180</span>
+                            <span class="unit">/ जोड़ी</span>
+                        </div>
+                        <button class="add-btn" data-id="earrings">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="wooden-toy" data-name="लकड़ी का खिलौना"
+                    data-category="wood" data-price="220">
+                    <div class="product-image">🪆</div>
+                    <div class="product-info">
+                        <span class="product-category">लकड़ी की कला</span>
+                        <h3>लकड़ी का खिलौना</h3>
+                        <p class="product-desc">पारंपरिक शैली का खिलौना</p>
+                        <div class="price-row">
+                            <span class="price">₹220</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="wooden-toy">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="wooden-decor" data-name="लकड़ी की सजावट"
+                    data-category="wood" data-price="550">
+                    <div class="product-image">🪵</div>
+                    <div class="product-info">
+                        <span class="product-category">लकड़ी की कला</span>
+                        <h3>लकड़ी की सजावट</h3>
+                        <p class="product-desc">घर के लिए कलात्मक वस्तु</p>
+                        <div class="price-row">
+                            <span class="price">₹550</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="wooden-decor">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="handmade-bag" data-name="हस्तनिर्मित कपड़े का बैग"
+                    data-category="textile" data-price="280">
+                    <div class="product-image">👜</div>
+                    <div class="product-info">
+                        <span class="product-category">कपड़ा और हस्तकला</span>
+                        <h3>हस्तनिर्मित कपड़े का बैग</h3>
+                        <p class="product-desc">खरीदारी और रोजाना इस्तेमाल के लिए</p>
+                        <div class="price-row">
+                            <span class="price">₹280</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="handmade-bag">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="embroidered-cloth" data-name="कढ़ाई वाला कपड़ा"
+                    data-category="textile" data-price="400">
+                    <div class="product-image">🧵</div>
+                    <div class="product-info">
+                        <span class="product-category">कपड़ा और हस्तकला</span>
+                        <h3>कढ़ाई वाला कपड़ा</h3>
+                        <p class="product-desc">हस्तनिर्मित कढ़ाई का काम</p>
+                        <div class="price-row">
+                            <span class="price">₹400</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="embroidered-cloth">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="clay-lamp" data-name="मिट्टी का सजावटी लैंप"
+                    data-category="pottery" data-price="320">
+                    <div class="product-image">🪔</div>
+                    <div class="product-info">
+                        <span class="product-category">मिट्टी के बर्तन</span>
+                        <h3>मिट्टी का सजावटी लैंप</h3>
+                        <p class="product-desc">घर की सजावट के लिए</p>
+                        <div class="price-row">
+                            <span class="price">₹320</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="clay-lamp">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="decorative-basket" data-name="हस्तनिर्मित टोकरी"
+                    data-category="textile" data-price="200">
+                    <div class="product-image">🧺</div>
+                    <div class="product-info">
+                        <span class="product-category">कपड़ा और हस्तकला</span>
+                        <h3>हस्तनिर्मित टोकरी</h3>
+                        <p class="product-desc">सामान रखने के लिए उपयोगी</p>
+                        <div class="price-row">
+                            <span class="price">₹200</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="decorative-basket">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <div class="empty-state" id="empty-state">
+                    <span>🔍</span>
+                    <h3>कोई उत्पाद नहीं मिला</h3>
+                    <p>दूसरा नाम या कैटेगरी चुनकर देखें।</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Benefits -->
+        <section class="benefits">
+            <div class="benefit">
+                <span>🎨</span>
+                <h3>अनूठी कारीगरी</h3>
+                <p>हस्तनिर्मित कला और पारंपरिक शिल्प का संग्रह।</p>
+            </div>
+
+            <div class="benefit">
+                <span>🤝</span>
+                <h3>कारीगरों का सहयोग</h3>
+                <p>स्थानीय कारीगरों को डिजिटल बाजार से जोड़ने की पहल।</p>
+            </div>
+
+            <div class="benefit">
+                <span>🛍️</span>
+                <h3>आसान खरीदारी</h3>
+                <p>उत्पाद खोजें और पसंदीदा वस्तुएं कार्ट में डालें।</p>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta">
+            <h2>स्थानीय कला को बढ़ावा दें ❤️</h2>
+            <p>हमारे दूसरे स्थानीय उत्पाद भी देखें और अपने बाजार से जुड़ें।</p>
+            <a href="local-products.html">स्थानीय उत्पाद देखें →</a>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            © <span id="current-year"></span> Gram Bazar.
+            सभी अधिकार सुरक्षित।
+        </p>
+        <p style="margin-top: 7px;">
+            स्थानीय कला और कारीगरों को डिजिटल पहचान देने की पहल 🌱
+        </p>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        // Current year
+        document.getElementById("current-year").textContent =
+            new Date().getFullYear();
+
+        // Search, category filter and sorting
+        const grid = document.getElementById("product-grid");
+        const searchInput = document.getElementById("search-input");
+        const categoryFilter = document.getElementById("category-filter");
+        const sortFilter = document.getElementById("sort-filter");
+        const count = document.getElementById("product-count");
+        const emptyState = document.getElementById("empty-state");
+
+        function filterProducts() {
+            const search = searchInput.value.trim().toLocaleLowerCase("hi");
+            const category = categoryFilter.value;
+
+            const cards = Array.from(
+                grid.querySelectorAll(".product-card")
+            );
+
+            cards.sort((a, b) => {
+                if (sortFilter.value === "low") {
+                    return Number(a.dataset.price) - Number(b.dataset.price);
+                }
+
+                if (sortFilter.value === "high") {
+                    return Number(b.dataset.price) - Number(a.dataset.price);
+                }
+
+                if (sortFilter.value === "name") {
+                    return a.dataset.name.localeCompare(b.dataset.name, "hi");
+                }
+
+                return 0;
+            });
+
+            cards.forEach(card => {
+                const name = card.dataset.name.toLocaleLowerCase("hi");
+                const matchesSearch = name.includes(search);
+
+                const matchesCategory =
+                    category === "all" ||
+                    card.dataset.category === category;
+
+                card.style.display =
+                    matchesSearch && matchesCategory ? "flex" : "none";
+
+                grid.insertBefore(card, emptyState);
+            });
+
+            const visibleCount = cards.filter(
+                card => card.style.display !== "none"
+            ).length;
+
+            count.textContent = visibleCount + " उत्पाद";
+            emptyState.style.display =
+                visibleCount === 0 ? "block" : "none";
+        }
+
+        searchInput.addEventListener("input", filterProducts);
+        categoryFilter.addEventListener("change", filterProducts);
+        sortFilter.addEventListener("change", filterProducts);
+
+        // Shared local cart
+        const CART_KEY = "gramBazarCart";
+        const toast = document.getElementById("toast");
+        let toastTimer;
+
+        function getCart() {
+            try {
+                const cart = JSON.parse(
+                    localStorage.getItem(CART_KEY) || "[]"
+                );
+
+                return Array.isArray(cart) ? cart : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.style.display = "block";
+
+            clearTimeout(toastTimer);
+
+            toastTimer = setTimeout(() => {
+                toast.style.display = "none";
+            }, 2500);
+        }
+
+        function addToCart(productId) {
+            const card = grid.querySelector(
+                '.product-card[data-id="' + productId + '"]'
+            );
+
+            if (!card) return;
+
+            const product = {
+                id: productId,
+                name: card.dataset.name,
+                price: Number(card.dataset.price),
+                quantity: 1,
+                unit: card.querySelector(".unit").textContent.trim(),
+                image: card.querySelector(".product-image").textContent.trim()
+            };
+
+            const cart = getCart();
+            const existing = cart.find(item => item.id === productId);
+
+            if (existing) {
+                existing.quantity = (Number(existing.quantity) || 0) + 1;
+            } else {
+                cart.push(product);
+            }
+
+            try {
+                localStorage.setItem(CART_KEY, JSON.stringify(cart));
+                showToast(product.name + " कार्ट में जोड़ दिया गया!");
+            } catch (error) {
+                showToast("कार्ट सेव नहीं हो सका। दोबारा कोशिश करें।");
+            }
+        }
+
+        grid.addEventListener("click", function(event) {
+            const button = event.target.closest(".add-btn");
+
+            if (!button) return;
+
+            addToCart(button.dataset.id);
+        });
+
+        filterProducts();
+    </script>
+
+    <!-- Common Navigation -->
+    <script src="common-nav.js"></script>
+
+</body>
+</html>
+```
