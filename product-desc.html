@@ -1,1 +1,741 @@
+```html
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Product Details | Gram Bazar</title>
+    <meta name="description" content="Gram Bazar पर उत्पादों की जानकारी, कीमत और खरीदारी के विकल्प देखें।">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7faf5;
+            color: #26352a;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button, input {
+            font: inherit;
+        }
+
+        .container {
+            width: min(1100px, 94%);
+            margin: auto;
+        }
+
+        .breadcrumb {
+            padding: 22px 0;
+            font-size: 14px;
+            color: #667369;
+        }
+
+        .breadcrumb a {
+            color: #218443;
+        }
+
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+            background: white;
+            border: 1px solid #e1eadf;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 35px;
+        }
+
+        .product-visual {
+            min-height: 380px;
+            background: #edf6eb;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-visual img {
+            width: 100%;
+            height: 380px;
+            object-fit: contain;
+            display: none;
+        }
+
+        .product-emoji {
+            font-size: 130px;
+        }
+
+        .product-info {
+            padding: 10px 0;
+        }
+
+        .category {
+            display: inline-block;
+            color: #218443;
+            background: #edf6eb;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: clamp(28px, 4vw, 38px);
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+
+        .rating {
+            color: #e39a16;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .rating span {
+            color: #667369;
+            margin-left: 5px;
+        }
+
+        .price {
+            color: #176534;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 14px 0 4px;
+        }
+
+        .unit {
+            color: #667369;
+            font-size: 14px;
+        }
+
+        .description {
+            margin: 22px 0;
+            color: #5c685f;
+        }
+
+        .details-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .details-list li {
+            padding: 7px 0;
+            border-bottom: 1px solid #edf1eb;
+            font-size: 14px;
+        }
+
+        .quantity-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+
+        .quantity-row label {
+            font-weight: bold;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid #d5e2d3;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quantity-control button {
+            width: 40px;
+            height: 40px;
+            background: #edf6eb;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .quantity-control input {
+            width: 48px;
+            height: 40px;
+            text-align: center;
+            border: none;
+            outline: none;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 13px 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .btn-primary {
+            background: #218443;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #14532d;
+        }
+
+        .btn-secondary {
+            background: #fff;
+            border: 1px solid #218443;
+            color: #176534;
+        }
+
+        .btn-secondary:hover {
+            background: #edf6eb;
+        }
+
+        .delivery-note {
+            margin-top: 20px;
+            padding: 14px;
+            background: #f7faf5;
+            border-radius: 9px;
+            font-size: 14px;
+            color: #526254;
+        }
+
+        .section-title {
+            font-size: 25px;
+            color: #176534;
+            margin-bottom: 18px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+
+        .feature {
+            background: white;
+            border: 1px solid #e1eadf;
+            border-radius: 12px;
+            padding: 22px;
+            text-align: center;
+        }
+
+        .feature span {
+            font-size: 35px;
+        }
+
+        .feature h3 {
+            color: #176534;
+            margin: 8px 0;
+            font-size: 17px;
+        }
+
+        .feature p {
+            color: #667369;
+            font-size: 14px;
+        }
+
+        .related {
+            margin-bottom: 50px;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .related-card {
+            background: white;
+            border: 1px solid #e1eadf;
+            border-radius: 12px;
+            padding: 22px;
+            text-align: center;
+        }
+
+        .related-card .emoji {
+            font-size: 48px;
+        }
+
+        .related-card h3 {
+            margin: 8px 0;
+        }
+
+        .related-card p {
+            color: #176534;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .related-card a {
+            display: inline-block;
+            color: white;
+            background: #218443;
+            padding: 9px 16px;
+            border-radius: 7px;
+        }
+
+        .message {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            max-width: calc(100% - 40px);
+            background: #14532d;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 9px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 15px #0002;
+        }
+
+        footer {
+            background: #123c24;
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        footer p {
+            color: #d6e8d9;
+            font-size: 14px;
+        }
+
+        @media (max-width: 750px) {
+            .product-layout {
+                grid-template-columns: 1fr;
+                gap: 22px;
+                padding: 18px;
+            }
+
+            .product-visual,
+            .product-visual img {
+                min-height: 280px;
+                height: 280px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Common Navigation -->
+    <div id="common-nav"></div>
+
+    <main class="container">
+
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="index.html">होम</a>
+            <span> / </span>
+            <span id="breadcrumb-category">प्रोडक्ट</span>
+            <span> / </span>
+            <span id="breadcrumb-name">प्रोडक्ट विवरण</span>
+        </nav>
+
+        <!-- Product Details -->
+        <section class="product-layout">
+
+            <div class="product-visual">
+                <img id="product-image" src="" alt="Product image">
+                <div class="product-emoji" id="product-emoji">🛍️</div>
+            </div>
+
+            <div class="product-info">
+
+                <span class="category" id="product-category">
+                    स्थानीय उत्पाद
+                </span>
+
+                <h1 id="product-name">स्थानीय उत्पाद</h1>
+
+                <div class="rating">
+                    ★★★★★ <span>Gram Bazar उत्पाद</span>
+                </div>
+
+                <div class="price" id="product-price">₹100</div>
+                <div class="unit" id="product-unit">प्रति नग</div>
+
+                <p class="description" id="product-description">
+                    Gram Bazar पर स्थानीय उत्पादकों और छोटे व्यवसायों
+                    के उत्पाद खोजें।
+                </p>
+
+                <ul class="details-list">
+                    <li>🌱 <strong>श्रेणी:</strong>
+                        <span id="detail-category">स्थानीय उत्पाद</span>
+                    </li>
+                    <li>📦 <strong>उपलब्धता:</strong>
+                        डेमो उत्पाद
+                    </li>
+                    <li>🤝 <strong>प्लेटफॉर्म:</strong>
+                        Gram Bazar
+                    </li>
+                </ul>
+
+                <div class="quantity-row">
+                    <label for="quantity">मात्रा:</label>
+
+                    <div class="quantity-control">
+                        <button type="button" id="decrease"
+                            aria-label="मात्रा घटाएं">−</button>
+
+                        <input id="quantity" type="number"
+                            value="1" min="1" max="99"
+                            inputmode="numeric"
+                            aria-label="उत्पाद की मात्रा">
+
+                        <button type="button" id="increase"
+                            aria-label="मात्रा बढ़ाएं">+</button>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-primary" id="add-to-cart">
+                        🛒 कार्ट में डालें
+                    </button>
+
+                    <button class="btn btn-secondary" id="buy-now">
+                        अभी खरीदें →
+                    </button>
+                </div>
+
+                <div class="delivery-note">
+                    🚚 <strong>स्थानीय खरीदारी:</strong>
+                    डिलीवरी और भुगतान की उपलब्धता विक्रेता पर निर्भर करेगी।
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Benefits -->
+        <section>
+            <h2 class="section-title">Gram Bazar क्यों चुनें?</h2>
+
+            <div class="features">
+                <div class="feature">
+                    <span>🌾</span>
+                    <h3>स्थानीय उत्पाद</h3>
+                    <p>अपने क्षेत्र के उत्पादों को एक जगह खोजें।</p>
+                </div>
+
+                <div class="feature">
+                    <span>🤝</span>
+                    <h3>स्थानीय व्यापार</h3>
+                    <p>किसानों, कारीगरों और छोटे व्यवसायों को सहयोग दें।</p>
+                </div>
+
+                <div class="feature">
+                    <span>🛍️</span>
+                    <h3>आसान अनुभव</h3>
+                    <p>उत्पाद विवरण देखें और कार्ट में सामान जोड़ें।</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Categories -->
+        <section class="related">
+            <h2 class="section-title">और उत्पाद देखें</h2>
+
+            <div class="related-grid">
+                <div class="related-card">
+                    <div class="emoji">🍎</div>
+                    <h3>ताजे फल</h3>
+                    <p>स्थानीय फलों का संग्रह</p>
+                    <a href="fruits.html">फल देखें</a>
+                </div>
+
+                <div class="related-card">
+                    <div class="emoji">🌾</div>
+                    <h3>किराना सामान</h3>
+                    <p>रोजमर्रा की जरूरी चीजें</p>
+                    <a href="groceries.html">किराना देखें</a>
+                </div>
+
+                <div class="related-card">
+                    <div class="emoji">🎨</div>
+                    <h3>हस्तनिर्मित वस्तुएं</h3>
+                    <p>कारीगरों की कलाकृतियां</p>
+                    <a href="handmade-crafts.html">हस्तशिल्प देखें</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>
+            © <span id="current-year"></span> Gram Bazar.
+            सभी अधिकार सुरक्षित।
+        </p>
+        <p style="margin-top: 7px;">
+            स्थानीय व्यापार को डिजिटल पहचान देने की पहल 🌱
+        </p>
+    </footer>
+
+    <div class="message" id="message" role="status" aria-live="polite"></div>
+
+    <script>
+        document.getElementById("current-year").textContent =
+            new Date().getFullYear();
+
+        /*
+          इस पेज पर उत्पाद URL से लोड किया जा सकता है।
+
+          उदाहरण:
+          product-desc.html?id=honey
+          product-desc.html?id=clay-pot
+          product-desc.html?id=mango
+        */
+
+        const products = {
+            "honey": {
+                id: "honey",
+                name: "स्थानीय शहद",
+                category: "प्राकृतिक उत्पाद",
+                price: 250,
+                unit: "प्रति 500 ग्राम",
+                emoji: "🍯",
+                description: "स्थानीय उत्पादकों से प्राप्त शहद। खरीदने से पहले उत्पाद की पैकेजिंग और जानकारी जांचें।",
+                image: "images/honey.jpg"
+            },
+
+            "jaggery": {
+                id: "jaggery",
+                name: "देसी गुड़",
+                category: "किराना",
+                price: 70,
+                unit: "प्रति किलो",
+                emoji: "🟤",
+                description: "पारंपरिक तरीके से तैयार किया जाने वाला गुड़।",
+                image: "images/jaggery.jpg"
+            },
+
+            "mango": {
+                id: "mango",
+                name: "ताजे आम",
+                category: "फल",
+                price: 120,
+                unit: "प्रति किलो",
+                emoji: "🥭",
+                description: "मौसमी आम। वास्तविक उपलब्धता और कीमत विक्रेता से जांचें।",
+                image: "images/mango.jpg"
+            },
+
+            "apple": {
+                id: "apple",
+                name: "ताजे सेब",
+                category: "फल",
+                price: 180,
+                unit: "प्रति किलो",
+                emoji: "🍎",
+                description: "रोजमर्रा के उपयोग के लिए ताजे सेब।",
+                image: "images/apple.jpg"
+            },
+
+            "rice": {
+                id: "rice",
+                name: "चावल",
+                category: "किराना",
+                price: 65,
+                unit: "प्रति किलो",
+                emoji: "🍚",
+                description: "रसोई के लिए चावल। किस्म और कीमत विक्रेता के अनुसार बदल सकती है।",
+                image: "images/rice.jpg"
+            },
+
+            "clay-pot": {
+                id: "clay-pot",
+                name: "मिट्टी का बर्तन",
+                category: "हस्तनिर्मित वस्तुएं",
+                price: 150,
+                unit: "प्रति नग",
+                emoji: "🏺",
+                description: "पारंपरिक कारीगरी से बना मिट्टी का बर्तन।",
+                image: "images/clay-pot.jpg"
+            },
+
+            "handmade-basket": {
+                id: "handmade-basket",
+                name: "हस्तनिर्मित टोकरी",
+                category: "स्थानीय उत्पाद",
+                price: 180,
+                unit: "प्रति नग",
+                emoji: "🧺",
+                description: "घर में सामान रखने के लिए हस्तनिर्मित टोकरी।",
+                image: "images/basket.jpg"
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const requestedId = params.get("id");
+        const product = products[requestedId] || {
+            id: "local-demo-product",
+            name: "स्थानीय उत्पाद",
+            category: "Gram Bazar उत्पाद",
+            price: 100,
+            unit: "प्रति नग",
+            emoji: "🛍️",
+            description: "यह उत्पाद विवरण पेज है। किसी उत्पाद का विवरण खोलने के लिए URL में उसका id दें।",
+            image: ""
+        };
+
+        document.title = product.name + " | Gram Bazar";
+
+        document.getElementById("product-name").textContent = product.name;
+        document.getElementById("product-category").textContent = product.category;
+        document.getElementById("detail-category").textContent = product.category;
+        document.getElementById("breadcrumb-category").textContent = product.category;
+        document.getElementById("breadcrumb-name").textContent = product.name;
+        document.getElementById("product-price").textContent =
+            "₹" + product.price.toLocaleString("en-IN");
+        document.getElementById("product-unit").textContent = product.unit;
+        document.getElementById("product-description").textContent = product.description;
+        document.getElementById("product-emoji").textContent = product.emoji;
+
+        const productImage = document.getElementById("product-image");
+        const productEmoji = document.getElementById("product-emoji");
+
+        if (product.image) {
+            productImage.src = product.image;
+
+            productImage.onload = function() {
+                productImage.style.display = "block";
+                productEmoji.style.display = "none";
+            };
+
+            productImage.onerror = function() {
+                productImage.style.display = "none";
+                productEmoji.style.display = "flex";
+            };
+        }
+
+        const quantityInput = document.getElementById("quantity");
+
+        document.getElementById("decrease").addEventListener("click", function() {
+            const current = Number(quantityInput.value) || 1;
+            quantityInput.value = Math.max(1, current - 1);
+        });
+
+        document.getElementById("increase").addEventListener("click", function() {
+            const current = Number(quantityInput.value) || 1;
+            quantityInput.value = Math.min(99, current + 1);
+        });
+
+        quantityInput.addEventListener("change", function() {
+            const value = Number(quantityInput.value) || 1;
+            quantityInput.value = Math.min(99, Math.max(1, Math.floor(value)));
+        });
+
+        const CART_KEY = "gramBazarCart";
+        const message = document.getElementById("message");
+        let messageTimer;
+
+        function showMessage(text) {
+            message.textContent = text;
+            message.style.display = "block";
+
+            clearTimeout(messageTimer);
+
+            messageTimer = setTimeout(function() {
+                message.style.display = "none";
+            }, 2600);
+        }
+
+        function getCart() {
+            try {
+                const cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+                return Array.isArray(cart) ? cart : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function addProductToCart() {
+            const quantity = Math.min(
+                99,
+                Math.max(1, Math.floor(Number(quantityInput.value) || 1))
+            );
+
+            const cart = getCart();
+            const existing = cart.find(item => item.id === product.id);
+
+            if (existing) {
+                existing.quantity =
+                    (Number(existing.quantity) || 0) + quantity;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: quantity,
+                    unit: product.unit,
+                    image: product.emoji
+                });
+            }
+
+            try {
+                localStorage.setItem(CART_KEY, JSON.stringify(cart));
+                return true;
+            } catch (error) {
+                showMessage("कार्ट सेव नहीं हो सका। कृपया दोबारा प्रयास करें।");
+                return false;
+            }
+        }
+
+        document.getElementById("add-to-cart").addEventListener("click", function() {
+            if (addProductToCart()) {
+                showMessage(product.name + " कार्ट में जोड़ दिया गया!");
+            }
+        });
+
+        document.getElementById("buy-now").addEventListener("click", function() {
+            if (addProductToCart()) {
+                window.location.href = "user-cart.html";
+            }
+        });
+    </script>
+
+    <!-- Common Navigation -->
+    <script src="common-nav.js"></script>
+
+</body>
+</html>
+```
