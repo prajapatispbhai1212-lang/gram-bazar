@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>About Us | Gram Bazar</title>
+
     <meta name="description" content="Gram Bazar के बारे में जानें। स्थानीय उत्पादों, ताजे फल-सब्जियों और हस्तनिर्मित वस्तुओं का अपना ऑनलाइन बाजार।">
 
     <style>
@@ -29,6 +31,65 @@
             text-decoration: none;
         }
 
+        /* COMMON NAVIGATION */
+        .navbar {
+            background: #14532d;
+            color: white;
+            padding: 12px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 12px rgba(0,0,0,.15);
+        }
+
+        .nav-logo {
+            color: white;
+            font-size: 25px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .nav-logo span {
+            color: #b9ef8b;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            padding: 9px 11px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #278344;
+        }
+
+        .menu-toggle {
+            display: none;
+            color: white;
+            background: #278344;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 23px;
+            cursor: pointer;
+        }
+
+        /* HERO */
         .hero {
             background: linear-gradient(135deg, #14532d, #278344);
             color: white;
@@ -87,7 +148,7 @@
             background: white;
             border-radius: 16px;
             padding: 30px;
-            box-shadow: 0 5px 22px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 5px 22px rgba(0,0,0,.06);
             border: 1px solid #e4eee3;
         }
 
@@ -118,6 +179,12 @@
             border-radius: 14px;
             text-align: center;
             border: 1px solid #e0ebdd;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,.08);
         }
 
         .feature-icon {
@@ -152,7 +219,7 @@
             padding: 12px 20px;
             color: #176534;
             font-weight: bold;
-            transition: 0.2s;
+            transition: .2s;
         }
 
         .category:hover {
@@ -186,7 +253,7 @@
             font-weight: bold;
             padding: 12px 25px;
             border-radius: 8px;
-            transition: 0.2s;
+            transition: .2s;
         }
 
         .cta-button:hover {
@@ -204,10 +271,53 @@
         footer p {
             color: #d6e8d9;
             font-size: 14px;
+            margin-bottom: 8px;
         }
 
         footer a {
             color: white;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin: 12px 0;
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 12px 4%;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-header {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 3px;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 11px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -231,16 +341,47 @@
             .cta h2 {
                 font-size: 25px;
             }
+
+            .about-card {
+                padding: 23px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Common Navigation Bar -->
-    <div id="common-nav"></div>
+    <!-- COMMON NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="nav-header">
+            <a class="nav-logo" href="index.html">
+                🌾 Gram <span>Bazar</span>
+            </a>
 
-    <!-- Hero Section -->
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+                type="button"
+            >
+                ☰
+            </button>
+        </div>
+
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">🏠 Home</a>
+            <a href="fruits.html">🍎 Fruits</a>
+            <a href="groceries.html">🛒 Groceries</a>
+            <a href="handmade-crafts.html">🎨 Handmade Crafts</a>
+            <a href="local-products.html">🌾 Local Products</a>
+            <a href="about.html" class="active">ℹ️ About Us</a>
+            <a href="user-dashboard.html">👤 Dashboard</a>
+            <a href="user-cart.html">🛍️ Cart</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
     <header class="hero">
         <div class="container">
             <h1>हमारे बारे में 🌾</h1>
@@ -254,16 +395,18 @@
 
     <main>
 
-        <!-- Introduction -->
+        <!-- INTRODUCTION -->
         <section class="section">
             <div class="container intro">
                 <h2 class="section-title">Gram Bazar क्या है?</h2>
+
                 <p>
                     Gram Bazar एक ऑनलाइन बाजार की वेबसाइट है, जिसका उद्देश्य
                     स्थानीय उत्पादों को ग्राहकों तक आसानी से पहुंचाना है।
                     यहां आप ताजे फल, किराना सामान, स्थानीय उत्पाद और
                     हस्तनिर्मित वस्तुओं जैसी श्रेणियों को एक ही स्थान पर देख सकते हैं।
                 </p>
+
                 <p>
                     हमारा लक्ष्य स्थानीय दुकानदारों, किसानों, कारीगरों और
                     ग्राहकों के बीच एक सुविधाजनक डिजिटल माध्यम उपलब्ध कराना है।
@@ -271,7 +414,7 @@
             </div>
         </section>
 
-        <!-- Mission and Vision -->
+        <!-- MISSION AND VISION -->
         <section class="section">
             <div class="container">
                 <div class="about-grid">
@@ -300,9 +443,10 @@
             </div>
         </section>
 
-        <!-- Features -->
+        <!-- FEATURES -->
         <section class="section features">
             <div class="container">
+
                 <div class="intro">
                     <h2 class="section-title">Gram Bazar की खासियतें</h2>
                     <p>
@@ -371,14 +515,89 @@
             </div>
         </section>
 
-        <!-- Categories -->
+        <!-- PRODUCT CATEGORIES -->
         <section class="section">
             <div class="container intro">
                 <h2 class="section-title">हमारी उत्पाद श्रेणियां</h2>
+
                 <p>
                     अपनी पसंद की श्रेणी चुनें और उपलब्ध उत्पादों को देखें।
                 </p>
 
                 <div class="categories">
-                    <a class="category" href="fruits.html">🍎 फल</a>
-                    <a class="category" href="groceries.html">🛒 किराना
+                    <a class="category" href="fruits.html">🍎 फल और सब्जियां</a>
+                    <a class="category" href="groceries.html">🛒 किराना</a>
+                    <a class="category" href="handmade-crafts.html">🎨 हस्तनिर्मित वस्तुएं</a>
+                    <a class="category" href="local-products.html">🌾 स्थानीय उत्पाद</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALL TO ACTION -->
+        <section class="container">
+            <div class="cta">
+                <h2>आज ही Gram Bazar देखें! 🌿</h2>
+
+                <p>
+                    स्थानीय उत्पादों की श्रेणियां देखें और
+                    अपनी पसंद के उत्पाद खोजें।
+                </p>
+
+                <a class="cta-button" href="index.html">
+                    अभी खरीदारी शुरू करें →
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>
+            <strong>🌾 Gram Bazar</strong>
+        </p>
+
+        <p>
+            स्थानीय उत्पादों को डिजिटल दुनिया से जोड़ने की एक पहल।
+        </p>
+
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="local-products.html">Local Products</a>
+            <a href="user-dashboard.html">Dashboard</a>
+        </div>
+
+        <p>
+            © <span id="currentYear"></span> Gram Bazar. All rights reserved.
+        </p>
+    </footer>
+
+    <!-- NAVIGATION MENU SCRIPT -->
+    <script>
+        const menuToggle = document.getElementById("menuToggle");
+        const navLinks = document.getElementById("navLinks");
+
+        menuToggle.addEventListener("click", function () {
+            const isOpen = navLinks.classList.toggle("open");
+            menuToggle.setAttribute("aria-expanded", isOpen);
+            menuToggle.textContent = isOpen ? "✕" : "☰";
+        });
+
+        // Close mobile menu after selecting a link
+        document.querySelectorAll("#navLinks a").forEach(function (link) {
+            link.addEventListener("click", function () {
+                navLinks.classList.remove("open");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.textContent = "☰";
+            });
+        });
+
+        // Automatically update the copyright year
+        document.getElementById("currentYear").textContent =
+            new Date().getFullYear();
+    </script>
+
+</body>
+</html>
+```
