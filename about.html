@@ -1,1 +1,384 @@
+```html
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Gram Bazar</title>
+    <meta name="description" content="Gram Bazar के बारे में जानें। स्थानीय उत्पादों, ताजे फल-सब्जियों और हस्तनिर्मित वस्तुओं का अपना ऑनलाइन बाजार।">
 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7faf5;
+            color: #26352a;
+            line-height: 1.7;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #14532d, #278344);
+            color: white;
+            text-align: center;
+            padding: 85px 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 5vw, 52px);
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: auto;
+            font-size: 18px;
+            color: #e5f5e8;
+        }
+
+        .container {
+            width: min(1100px, 92%);
+            margin: auto;
+        }
+
+        .section {
+            padding: 65px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            color: #176534;
+            margin-bottom: 18px;
+        }
+
+        .intro {
+            text-align: center;
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .intro p,
+        .content p {
+            font-size: 17px;
+            color: #58665b;
+            margin-bottom: 15px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 28px;
+            margin-top: 35px;
+        }
+
+        .about-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 22px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e4eee3;
+        }
+
+        .about-card h3 {
+            color: #176534;
+            font-size: 23px;
+            margin-bottom: 12px;
+        }
+
+        .about-card p {
+            color: #58665b;
+        }
+
+        .features {
+            background: #edf6eb;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+            margin-top: 32px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 27px 20px;
+            border-radius: 14px;
+            text-align: center;
+            border: 1px solid #e0ebdd;
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card h3 {
+            color: #176534;
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+
+        .feature-card p {
+            color: #637065;
+            font-size: 15px;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 28px;
+        }
+
+        .category {
+            display: inline-block;
+            background: white;
+            border: 1px solid #d9e8d6;
+            border-radius: 30px;
+            padding: 12px 20px;
+            color: #176534;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .category:hover {
+            background: #176534;
+            color: white;
+        }
+
+        .cta {
+            background: #176534;
+            color: white;
+            text-align: center;
+            padding: 55px 20px;
+            border-radius: 18px;
+            margin: 10px auto 65px;
+        }
+
+        .cta h2 {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .cta p {
+            margin-bottom: 22px;
+            color: #e5f5e8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #176534;
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #e8f5e9;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background: #123c24;
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        footer p {
+            color: #d6e8d9;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .about-grid,
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 60px 18px;
+            }
+
+            .section {
+                padding: 45px 0;
+            }
+
+            .section-title {
+                font-size: 27px;
+            }
+
+            .cta h2 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Common Navigation Bar -->
+    <div id="common-nav"></div>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h1>हमारे बारे में 🌾</h1>
+            <p>
+                Gram Bazar में आपका स्वागत है!
+                स्थानीय उत्पादकों को ग्राहकों से जोड़ने और
+                गांव के उत्पादों को डिजिटल पहचान देने की एक पहल।
+            </p>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Introduction -->
+        <section class="section">
+            <div class="container intro">
+                <h2 class="section-title">Gram Bazar क्या है?</h2>
+                <p>
+                    Gram Bazar एक ऑनलाइन बाजार की वेबसाइट है, जिसका उद्देश्य
+                    स्थानीय उत्पादों को ग्राहकों तक आसानी से पहुंचाना है।
+                    यहां आप ताजे फल, किराना सामान, स्थानीय उत्पाद और
+                    हस्तनिर्मित वस्तुओं जैसी श्रेणियों को एक ही स्थान पर देख सकते हैं।
+                </p>
+                <p>
+                    हमारा लक्ष्य स्थानीय दुकानदारों, किसानों, कारीगरों और
+                    ग्राहकों के बीच एक सुविधाजनक डिजिटल माध्यम उपलब्ध कराना है।
+                </p>
+            </div>
+        </section>
+
+        <!-- Mission and Vision -->
+        <section class="section">
+            <div class="container">
+                <div class="about-grid">
+
+                    <article class="about-card">
+                        <h3>🎯 हमारा मिशन</h3>
+                        <p>
+                            स्थानीय व्यापार को डिजिटल दुनिया से जोड़ना,
+                            छोटे विक्रेताओं के उत्पादों को अधिक लोगों तक
+                            पहुंचाने में मदद करना और ग्राहकों को एक
+                            सुविधाजनक ऑनलाइन अनुभव देना।
+                        </p>
+                    </article>
+
+                    <article class="about-card">
+                        <h3>🌱 हमारा विजन</h3>
+                        <p>
+                            एक ऐसा डिजिटल बाजार बनाना जहां स्थानीय
+                            उत्पादों को पहचान मिले, छोटे व्यवसाय आगे बढ़ें
+                            और ग्रामीण अर्थव्यवस्था को मजबूत बनाने में
+                            योगदान दिया जा सके।
+                        </p>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="section features">
+            <div class="container">
+                <div class="intro">
+                    <h2 class="section-title">Gram Bazar की खासियतें</h2>
+                    <p>
+                        स्थानीय खरीदारी को सरल और सुविधाजनक बनाने के लिए
+                        हमारी वेबसाइट पर अलग-अलग उत्पाद श्रेणियां उपलब्ध हैं।
+                    </p>
+                </div>
+
+                <div class="feature-grid">
+
+                    <article class="feature-card">
+                        <div class="feature-icon">🍎</div>
+                        <h3>फल और सब्जियां</h3>
+                        <p>
+                            फल और सब्जियों की श्रेणी में उपलब्ध उत्पादों को
+                            आसानी से देखें।
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">🛒</div>
+                        <h3>किराना सामान</h3>
+                        <p>
+                            रोजमर्रा की जरूरतों के लिए किराना उत्पादों
+                            को एक ही जगह पर खोजें।
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>हस्तनिर्मित वस्तुएं</h3>
+                        <p>
+                            स्थानीय कारीगरों द्वारा बनाई गई वस्तुओं
+                            को खोजने का अवसर पाएं।
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">🌾</div>
+                        <h3>स्थानीय उत्पाद</h3>
+                        <p>
+                            अपने आसपास के स्थानीय उत्पादों और
+                            विक्रेताओं को पहचानें।
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>मोबाइल फ्रेंडली</h3>
+                        <p>
+                            मोबाइल, टैबलेट और कंप्यूटर पर वेबसाइट
+                            का उपयोग आसानी से करें।
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">🤝</div>
+                        <h3>स्थानीय व्यापार का सहयोग</h3>
+                        <p>
+                            स्थानीय व्यवसायों और ग्रामीण उद्यमियों
+                            को डिजिटल मंच से जोड़ने की पहल।
+                        </p>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="section">
+            <div class="container intro">
+                <h2 class="section-title">हमारी उत्पाद श्रेणियां</h2>
+                <p>
+                    अपनी पसंद की श्रेणी चुनें और उपलब्ध उत्पादों को देखें।
+                </p>
+
+                <div class="categories">
+                    <a class="category" href="fruits.html">🍎 फल</a>
+                    <a class="category" href="groceries.html">🛒 किराना
