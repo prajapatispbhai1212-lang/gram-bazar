@@ -1,1 +1,725 @@
+```html
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Fresh Fruits | Gram Bazar</title>
+    <meta name="description" content="Gram Bazar पर आम, सेब, केला, संतरा, अंगूर और अन्य फलों के उत्पाद देखें।">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7faf5;
+            color: #26352a;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        input, select, button {
+            font: inherit;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #14532d, #32934f);
+            color: white;
+            text-align: center;
+            padding: 55px 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(30px, 5vw, 44px);
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #e7f6e9;
+            font-size: 17px;
+        }
+
+        .container {
+            width: min(1150px, 94%);
+            margin: auto;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 30px 0;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            flex: 1;
+            min-width: 190px;
+            padding: 13px 15px;
+            border: 1px solid #d5e2d3;
+            border-radius: 9px;
+            background: white;
+            outline: none;
+        }
+
+        .toolbar input:focus,
+        .toolbar select:focus {
+            border-color: #218443;
+        }
+
+        .section-heading {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .section-heading h2 {
+            color: #176534;
+            font-size: 27px;
+        }
+
+        #product-count {
+            color: #637065;
+            font-size: 14px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 22px;
+            margin-bottom: 55px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #e4ece1;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09);
+        }
+
+        .product-image {
+            height: 165px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #edf6eb;
+            font-size: 75px;
+        }
+
+        .product-info {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-category {
+            color: #32834a;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-info h3 {
+            font-size: 19px;
+            margin-bottom: 4px;
+        }
+
+        .product-desc {
+            color: #778078;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-top: auto;
+            margin-bottom: 13px;
+        }
+
+        .price {
+            color: #176534;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .unit {
+            color: #778078;
+            font-size: 12px;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 11px;
+            border: none;
+            border-radius: 8px;
+            background: #218443;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #14532d;
+        }
+
+        .empty-state {
+            display: none;
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 45px 15px;
+            color: #667369;
+        }
+
+        .empty-state span {
+            font-size: 45px;
+        }
+
+        .empty-state h3 {
+            color: #176534;
+            margin: 10px 0;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 50px;
+        }
+
+        .benefit {
+            background: #edf6eb;
+            padding: 22px 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .benefit span {
+            font-size: 30px;
+        }
+
+        .benefit h3 {
+            color: #176534;
+            font-size: 17px;
+            margin: 8px 0 4px;
+        }
+
+        .benefit p {
+            color: #667369;
+            font-size: 13px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #14532d;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 9px;
+            box-shadow: 0 4px 15px #0002;
+            display: none;
+            z-index: 1000;
+            max-width: calc(100% - 40px);
+        }
+
+        footer {
+            background: #123c24;
+            color: white;
+            text-align: center;
+            padding: 24px 15px;
+        }
+
+        footer p {
+            color: #d6e8d9;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .product-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 650px) {
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .product-image {
+                height: 125px;
+                font-size: 55px;
+            }
+
+            .product-info {
+                padding: 12px;
+            }
+
+            .product-info h3 {
+                font-size: 16px;
+            }
+
+            .price {
+                font-size: 17px;
+            }
+
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Common Navigation Bar -->
+    <div id="common-nav"></div>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h1>🍎 ताजे फल बाजार</h1>
+            <p>फलों की दुनिया में आपका स्वागत है — अपनी पसंद के फल खोजें!</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Search and Filters -->
+        <section class="toolbar" aria-label="फल खोजें">
+
+            <input
+                type="search"
+                id="search-input"
+                placeholder="🔍 फल का नाम खोजें..."
+                aria-label="फल का नाम खोजें"
+            >
+
+            <select id="category-filter" aria-label="फल की कैटेगरी">
+                <option value="all">सभी फल</option>
+                <option value="seasonal">मौसमी फल</option>
+                <option value="citrus">खट्टे फल</option>
+                <option value="tropical">उष्णकटिबंधीय फल</option>
+                <option value="other">अन्य फल</option>
+            </select>
+
+            <select id="sort-filter" aria-label="कीमत के अनुसार क्रम">
+                <option value="default">सामान्य क्रम</option>
+                <option value="low">कीमत: कम से ज्यादा</option>
+                <option value="high">कीमत: ज्यादा से कम</option>
+                <option value="name">नाम के अनुसार</option>
+            </select>
+
+        </section>
+
+        <!-- Product List -->
+        <section>
+            <div class="section-heading">
+                <h2>हमारे फल</h2>
+                <span id="product-count" aria-live="polite"></span>
+            </div>
+
+            <div class="product-grid" id="product-grid">
+
+                <article class="product-card"
+                    data-id="apple" data-name="सेब"
+                    data-category="other" data-price="160">
+                    <div class="product-image">🍎</div>
+                    <div class="product-info">
+                        <span class="product-category">अन्य फल</span>
+                        <h3>ताजे सेब</h3>
+                        <p class="product-desc">रोजाना खाने के लिए स्वादिष्ट सेब</p>
+                        <div class="price-row">
+                            <span class="price">₹160</span>
+                            <span class="unit">/ किलो</span>
+                        </div>
+                        <button class="add-btn" data-id="apple">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="banana" data-name="केला"
+                    data-category="tropical" data-price="50">
+                    <div class="product-image">🍌</div>
+                    <div class="product-info">
+                        <span class="product-category">उष्णकटिबंधीय फल</span>
+                        <h3>पका केला</h3>
+                        <p class="product-desc">मीठे और स्वादिष्ट केले</p>
+                        <div class="price-row">
+                            <span class="price">₹50</span>
+                            <span class="unit">/ दर्जन</span>
+                        </div>
+                        <button class="add-btn" data-id="banana">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="orange" data-name="संतरा"
+                    data-category="citrus" data-price="80">
+                    <div class="product-image">🍊</div>
+                    <div class="product-info">
+                        <span class="product-category">खट्टे फल</span>
+                        <h3>रसीले संतरे</h3>
+                        <p class="product-desc">खट्टे-मीठे संतरे</p>
+                        <div class="price-row">
+                            <span class="price">₹80</span>
+                            <span class="unit">/ किलो</span>
+                        </div>
+                        <button class="add-btn" data-id="orange">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="mango" data-name="आम"
+                    data-category="seasonal" data-price="100">
+                    <div class="product-image">🥭</div>
+                    <div class="product-info">
+                        <span class="product-category">मौसमी फल</span>
+                        <h3>मीठे आम</h3>
+                        <p class="product-desc">स्वादिष्ट आमों का आनंद लें</p>
+                        <div class="price-row">
+                            <span class="price">₹100</span>
+                            <span class="unit">/ किलो</span>
+                        </div>
+                        <button class="add-btn" data-id="mango">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="grapes" data-name="अंगूर"
+                    data-category="seasonal" data-price="90">
+                    <div class="product-image">🍇</div>
+                    <div class="product-info">
+                        <span class="product-category">मौसमी फल</span>
+                        <h3>ताजे अंगूर</h3>
+                        <p class="product-desc">मीठे और रसीले अंगूर</p>
+                        <div class="price-row">
+                            <span class="price">₹90</span>
+                            <span class="unit">/ किलो</span>
+                        </div>
+                        <button class="add-btn" data-id="grapes">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="papaya" data-name="पपीता"
+                    data-category="tropical" data-price="45">
+                    <div class="product-image">🍈</div>
+                    <div class="product-info">
+                        <span class="product-category">उष्णकटिबंधीय फल</span>
+                        <h3>पका पपीता</h3>
+                        <p class="product-desc">नरम और स्वादिष्ट पपीता</p>
+                        <div class="price-row">
+                            <span class="price">₹45</span>
+                            <span class="unit">/ किलो</span>
+                        </div>
+                        <button class="add-btn" data-id="papaya">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="watermelon" data-name="तरबूज"
+                    data-category="seasonal" data-price="30">
+                    <div class="product-image">🍉</div>
+                    <div class="product-info">
+                        <span class="product-category">मौसमी फल</span>
+                        <h3>तरबूज</h3>
+                        <p class="product-desc">गर्मियों का लोकप्रिय फल</p>
+                        <div class="price-row">
+                            <span class="price">₹30</span>
+                            <span class="unit">/ किलो</span>
+                        </div>
+                        <button class="add-btn" data-id="watermelon">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="pineapple" data-name="अनानास"
+                    data-category="tropical" data-price="70">
+                    <div class="product-image">🍍</div>
+                    <div class="product-info">
+                        <span class="product-category">उष्णकटिबंधीय फल</span>
+                        <h3>अनानास</h3>
+                        <p class="product-desc">खट्टा-मीठा अनानास</p>
+                        <div class="price-row">
+                            <span class="price">₹70</span>
+                            <span class="unit">/ नग</span>
+                        </div>
+                        <button class="add-btn" data-id="pineapple">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="pomegranate" data-name="अनार"
+                    data-category="other" data-price="140">
+                    <div class="product-image">🍎</div>
+                    <div class="product-info">
+                        <span class="product-category">अन्य फल</span>
+                        <h3>अनार</h3>
+                        <p class="product-desc">लाल दानों वाला फल</p>
+                        <div class="price-row">
+                            <span class="price">₹140</span>
+                            <span class="unit">/ किलो</span>
+                        </div>
+                        <button class="add-btn" data-id="pomegranate">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="guava" data-name="अमरूद"
+                    data-category="seasonal" data-price="60">
+                    <div class="product-image">🍐</div>
+                    <div class="product-info">
+                        <span class="product-category">मौसमी फल</span>
+                        <h3>ताजा अमरूद</h3>
+                        <p class="product-desc">मीठा और कुरकुरा अमरूद</p>
+                        <div class="price-row">
+                            <span class="price">₹60</span>
+                            <span class="unit">/ किलो</span>
+                        </div>
+                        <button class="add-btn" data-id="guava">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="lemon" data-name="नींबू"
+                    data-category="citrus" data-price="60">
+                    <div class="product-image">🍋</div>
+                    <div class="product-info">
+                        <span class="product-category">खट्टे फल</span>
+                        <h3>ताजा नींबू</h3>
+                        <p class="product-desc">शरबत और भोजन के लिए</p>
+                        <div class="price-row">
+                            <span class="price">₹60</span>
+                            <span class="unit">/ किलो</span>
+                        </div>
+                        <button class="add-btn" data-id="lemon">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <article class="product-card"
+                    data-id="strawberry" data-name="स्ट्रॉबेरी"
+                    data-category="other" data-price="180">
+                    <div class="product-image">🍓</div>
+                    <div class="product-info">
+                        <span class="product-category">अन्य फल</span>
+                        <h3>स्ट्रॉबेरी</h3>
+                        <p class="product-desc">मीठी और रसीली स्ट्रॉबेरी</p>
+                        <div class="price-row">
+                            <span class="price">₹180</span>
+                            <span class="unit">/ डिब्बा</span>
+                        </div>
+                        <button class="add-btn" data-id="strawberry">कार्ट में डालें +</button>
+                    </div>
+                </article>
+
+                <div class="empty-state" id="empty-state">
+                    <span>🔍</span>
+                    <h3>कोई फल नहीं मिला</h3>
+                    <p>दूसरा नाम या कैटेगरी चुनकर देखें।</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Benefits -->
+        <section class="benefits">
+            <div class="benefit">
+                <span>🍎</span>
+                <h3>फल चुनना आसान</h3>
+                <p>अपनी पसंद के फल आसानी से खोजें।</p>
+            </div>
+
+            <div class="benefit">
+                <span>🛒</span>
+                <h3>आसान कार्ट</h3>
+                <p>पसंद के उत्पाद कार्ट में जोड़ें।</p>
+            </div>
+
+            <div class="benefit">
+                <span>📱</span>
+                <h3>मोबाइल फ्रेंडली</h3>
+                <p>मोबाइल और कंप्यूटर पर इस्तेमाल करें।</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            © <span id="current-year"></span> Gram Bazar.
+            सभी अधिकार सुरक्षित।
+        </p>
+        <p style="margin-top: 7px;">आपका अपना स्थानीय ऑनलाइन बाजार 🌱</p>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        document.getElementById("current-year").textContent =
+            new Date().getFullYear();
+
+        const grid = document.getElementById("product-grid");
+        const searchInput = document.getElementById("search-input");
+        const categoryFilter = document.getElementById("category-filter");
+        const sortFilter = document.getElementById("sort-filter");
+        const count = document.getElementById("product-count");
+        const emptyState = document.getElementById("empty-state");
+
+        // Search, filter and sort
+        function filterProducts() {
+            const search = searchInput.value.trim().toLocaleLowerCase("hi");
+            const category = categoryFilter.value;
+            const cards = Array.from(
+                grid.querySelectorAll(".product-card")
+            );
+
+            cards.sort((a, b) => {
+                if (sortFilter.value === "low") {
+                    return Number(a.dataset.price) - Number(b.dataset.price);
+                }
+
+                if (sortFilter.value === "high") {
+                    return Number(b.dataset.price) - Number(a.dataset.price);
+                }
+
+                if (sortFilter.value === "name") {
+                    return a.dataset.name.localeCompare(b.dataset.name, "hi");
+                }
+
+                return 0;
+            });
+
+            cards.forEach(card => {
+                const name = card.dataset.name.toLocaleLowerCase("hi");
+                const matchesSearch = name.includes(search);
+                const matchesCategory =
+                    category === "all" ||
+                    card.dataset.category === category;
+
+                card.style.display =
+                    matchesSearch && matchesCategory ? "flex" : "none";
+
+                grid.insertBefore(card, emptyState);
+            });
+
+            const visibleCount = cards.filter(
+                card => card.style.display !== "none"
+            ).length;
+
+            count.textContent = visibleCount + " फल";
+            emptyState.style.display =
+                visibleCount === 0 ? "block" : "none";
+        }
+
+        searchInput.addEventListener("input", filterProducts);
+        categoryFilter.addEventListener("change", filterProducts);
+        sortFilter.addEventListener("change", filterProducts);
+
+        // Add products to cart
+        const CART_KEY = "gramBazarCart";
+        const toast = document.getElementById("toast");
+        let toastTimer;
+
+        function getCart() {
+            try {
+                const cart = JSON.parse(
+                    localStorage.getItem(CART_KEY) || "[]"
+                );
+                return Array.isArray(cart) ? cart : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.style.display = "block";
+            clearTimeout(toastTimer);
+
+            toastTimer = setTimeout(() => {
+                toast.style.display = "none";
+            }, 2500);
+        }
+
+        function addToCart(productId) {
+            const card = grid.querySelector(
+                '.product-card[data-id="' + productId + '"]'
+            );
+
+            if (!card) return;
+
+            const product = {
+                id: productId,
+                name: card.dataset.name,
+                price: Number(card.dataset.price),
+                quantity: 1,
+                unit: card.querySelector(".unit").textContent.trim(),
+                image: card.querySelector(".product-image").textContent.trim()
+            };
+
+            const cart = getCart();
+            const existing = cart.find(item => item.id === productId);
+
+            if (existing) {
+                existing.quantity = (Number(existing.quantity) || 0) + 1;
+            } else {
+                cart.push(product);
+            }
+
+            try {
+                localStorage.setItem(CART_KEY, JSON.stringify(cart));
+                showToast(product.name + " कार्ट में जोड़ दिया गया!");
+            } catch (error) {
+                showToast("कार्ट सेव नहीं हो सका। दोबारा कोशिश करें।");
+            }
+        }
+
+        grid.addEventListener("click", function(event) {
+            const button = event.target.closest(".add-btn");
+            if (!button) return;
+
+            addToCart(button.dataset.id);
+        });
+
+        filterProducts();
+    </script>
+
+    <!-- Shared Navigation -->
+    <script src="common-nav.js"></script>
+
+</body>
+</html>
+```
